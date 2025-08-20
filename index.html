@@ -1,381 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Fazlija | Frontend Developer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Crypto Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="header-container container">
-            <div class="logo">BF</div>
-            
-            <button class="hamburger" aria-label="Menu">
-                <span class="hamburger-box">
-                    <span class="hamburger-inner"></span>
-                </span>
-            </button>
-            
-            <div class="nav-wrapper">
-                <nav class="nav-menu">
-                    <ul>
-                        <li><a href="#home" class="active">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#skills">Skills</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#certifications">Certifications</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-                
-                <div class="theme-toggle">
-                    <input type="checkbox" id="theme-switch" class="theme-switch">
-                    <label for="theme-switch" class="theme-label">
-                        <i class="fas fa-moon"></i>
-                        <i class="fas fa-sun"></i>
-                        <span class="theme-ball"></span>
-                    </label>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-coins"></i> Crypto Tracker</h1>
+            <div class="header-actions">
+                <div class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon" style="display: none;"></i>
+                </div>
+                <div class="refresh" id="refresh">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </div>
+            </div>
+        </header>
+        
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search cryptocurrencies...">
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="top10">Top 10</button>
+            <button class="filter-btn" data-filter="gainers">Gainers</button>
+            <button class="filter-btn" data-filter="losers">Losers</button>
+        </div>
+        
+        <div class="crypto-list">
+            <div class="list-header">
+                <div class="rank">#</div>
+                <div class="name">Coin</div>
+                <div class="price">Price</div>
+                <div class="change">24h</div>
+                <div class="market-cap">Market Cap</div>
+            </div>
+            <div id="crypto-data" class="list-body">
+                <!-- Crypto data will be loaded here -->
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading cryptocurrency data...
                 </div>
             </div>
         </div>
-        <div class="nav-backdrop"></div>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <h1>Ben Fazlija</h1>
-            <h2>Frontend Developer</h2>
-            <p>Creating beautiful, functional websites with modern technologies</p>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I'm Ben Fazlija, a motivated and hardworking recent graduate in social sciences with a passion for web development. My journey into tech began with curiosity and has grown into a dedicated pursuit of frontend development excellence.</p>
-                    <p>Through various academies like  JCoders, Bit Academy and Tectigon Academy, I've gained practical skills in HTML, CSS, JavaScript, and React. I'm particularly interested in creating user-friendly interfaces that solve real problems.</p>
-                    <p>My background in social sciences gives me a unique perspective on user behavior and communication, which I bring to every project. I'm eager to contribute to innovative teams and continue growing as a developer.</p>
-                </div>
-                <div class="about-image">
-                    <img src="img/foto PFP.jpg" alt="Ben Fazlija">
-                </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Market Cap</h3>
+                <p id="total-market-cap">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>24h Volume</h3>
+                <p id="total-volume">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Cryptos</h3>
+                <p id="active-cryptos">-</p>
             </div>
         </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="skills-section">
-        <div class="container">
-            <h2 class="section-title">Technical Skills</h2>
-            <div class="skills-row">
-                <div class="skill-item">
-                    <i class="fab fa-html5"></i>
-                    <span>HTML5</span>
-                </div>
-                <div class="skill-item">
-                    <i class="fab fa-css3-alt"></i>
-                    <span>CSS3</span>
-                </div>
-                <div class="skill-item">
-                    <i class="fab fa-js"></i>
-                    <span>JavaScript</span>
-                </div>
-                <div class="skill-item">
-                    <i class="fab fa-react"></i>
-                    <span>React</span>
-                </div>
-                <div class="skill-item">
-                    <i class="fas fa-database"></i>
-                    <span>MySQL</span>
-                </div>
-                <div class="skill-item">
-                    <i class="fab fa-php"></i>
-                    <span>PHP</span>
-                </div>
-            </div>
-
-            <h2 class="section-title" style="margin-top: 4rem;">Soft Skills</h2>
-            <div class="skills-row">
-                <div class="skill-item soft-skill-item">
-                    <i class="fas fa-comments"></i>
-                    <span>Communication</span>
-                </div>
-                <div class="skill-item soft-skill-item">
-                    <i class="fas fa-users"></i>
-                    <span>Teamwork</span>
-                </div>
-                <div class="skill-item soft-skill-item">
-                    <i class="fas fa-lightbulb"></i>
-                    <span>Problem Solving</span>
-                </div>
-                <div class="skill-item soft-skill-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Time Management</span>
-                </div>
-                <div class="skill-item soft-skill-item">
-                    <i class="fas fa-tasks"></i>
-                    <span>Adaptability</span>
-                </div>
-                <div class="skill-item soft-skill-item">
-                    <i class="fas fa-brain"></i>
-                    <span>Critical Thinking</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="projects-section">
-        <div class="container">
-            <h2 class="section-title">My Projects</h2>
-            
-            <div class="project-filters">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="html">HTML/CSS</button>
-                <button class="filter-btn" data-filter="javascript">JavaScript</button>
-                <button class="filter-btn" data-filter="react">React</button>
-            </div>
-            
-            <div class="projects-grid">
-                <div class="project-card" data-tech="html javascript">
-                    <div class="project-image" style="background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);">
-                        <img src="./img/crypto app.PNG" alt="Crypto Tracker App">
-                    </div>
-                    <div class="project-info">
-                        <h3>Crypto Tracker</h3>
-                        <p>A fully responsive Crypto Tracker site built with HTML, CSS, and JavaScript.</p>
-                        <div class="project-tech">
-                            <span>HTML5</span>
-                            <span>CSS3</span>
-                            <span>JavaScript</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="./projects/crypto app/index.html" class="btn">Live Demo</a>
-                            <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card" data-tech="react">
-                    <div class="project-image">
-                        <img src="img/pl2.PNG" alt="Movie Database App">
-                    </div>
-                    <div class="project-info">
-                        <h3>Movie Database</h3>
-                        <p>A React application that searches and displays movie information from TMDB API.</p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>API Integration</span>
-                            <span>Styled Components</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="./projects/movie app//index.html" class="btn">Live Demo</a>
-                            <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card" data-tech="javascript">
-                    <div class="project-image" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);">
-                       <img src="img/finance DB.PNG" alt="Finance Dashboard">
-                    </div>
-                    <div class="project-info">
-                        <h3>Finance Dashboard</h3>
-                        <p>A responsive web application that tracks and visualizes personal finances with interactive charts and transaction management.</p>
-                        <div class="project-tech">
-                            <span>JavaScript</span>
-                            <span>API Integration</span>
-                         
-                        </div>
-                        <div class="project-links">
-                            <a href="./projects/finance dashboard/index.html" class="btn">Live Demo</a>
-                            <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Certifications Section -->
-    <section id="certifications" class="certifications-section">
-        <div class="container">
-            <h2 class="section-title">Certifications</h2>
-            <div class="certifications-grid">
-                <!-- Full Stack Development Certificate -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/Tectigon Academy-1.png" alt="Full Stack Development Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>Full Stack Development</h3>
-                        <p>Tectign Academy</p>
-                        <p>Completed 60 hours of intensive Full Stack Development training</p>
-                     
-                    </div>
-                </div>
-
-                <!-- English Language Certificate -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/Oxford 2016-1.png" alt="English Language Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>English Language (A1)</h3>
-                        <p>Oxford Studio</p>
-                        <p>Completed Excellent 1 - Primary Basic A1 course</p>
-                     
-                    </div>
-                </div>
-
-                <!-- Web Fundamentals Certificate -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/Html-1.png" alt="Web Fundamentals Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>Web Fundamentals</h3>
-                        <p>jCoders Academy</p>
-                        <p>Completed 9 months training focused on HTML, CSS, Web Tools and projects</p>
-                    </div>
-                </div>
-                
-                <!-- JavaScript Certificate -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/Jcoders Js-1.png" alt="JavaScript Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>JavaScript</h3>
-                        <p>jCoders Academy</p>
-                        <p>9 months of training focused on JavaScript Fundamentals, Intermediate, Advanced concepts</p>
-                    </div>
-                </div>
-                
-                <!-- IT/Media Technician Certificate -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/JUNIOR-1.png" alt="IT/Media Technician Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>Junior IT/Media Technician</h3>
-                      <p>Shkolla Digitale</p>
-                        <p>Summer school covering Computer Architecture, Networks, Cyber Security, and Web Design</p>
-                    </div>
-                </div>
-                
-                <!-- React JavaScript Certificate -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/BIT ACADEMY-1.png" alt="React JavaScript Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>React JavaScript</h3>
-                        <p>Bit Academy</p>
-                        <p>Completed 5 months training (200 hours) in React fundamentals, styling, and routing</p>
-                    </div>
-                </div>
-                
-                <!-- English Certificate (A1) -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/Oxford 2017-1.png" alt="English Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>English Language (A1)</h3>
-                        <p>Oxford Studio</p>
-                        <p>Completed Excellent 2 - Primary Elementary A1 course</p>
-                    </div>
-                </div>
-                
-                <!-- English Certificate (A1-A2) -->
-                <div class="certification-card">
-                    <div class="cert-image">
-                        <img src="certificates/Oxford 2019-1.png" alt="English Certificate">
-                    </div>
-                    <div class="cert-info">
-                        <h3>English Language (A1-A2)</h3>
-                        <p>Oxford Studio</p>
-                        <p>Completed Next Move 2 - Secondary: A1-A2 course with 106 hours of teaching</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <h2 class="section-title">Contact Me</h2>
-            <div class="contact-form">
-                <form id="contactForm" method="POST">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Send Message</button>
-                    <div id="formResponse"></div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <h3>Ben Fazlija</h3>
-                    <p>Frontend Developer creating modern web experiences.</p>
-                </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#skills">Skills</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#certifications">Certifications</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h3>Contact Info</h3>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> benfazlija46@gmail.com</li>
-                        <li><i class="fas fa-phone"></i> (+383) 45676320</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Prishtina, Kosovo</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="social-links">
-                <a href="https://www.linkedin.com/in/ben-fazlija-0417b1314/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="https://github.com/b3nny667"><i class="fab fa-github"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-            <p>&copy; <span id="year"></span> Ben Fazlija. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+    </div>
     
+    <script src="script.js"></script>
 </body>
 </html>
