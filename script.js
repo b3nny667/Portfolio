@@ -1,164 +1,157 @@
+// Mobile Menu Functionality
+const hamburger = document.querySelector('.hamburger');
+const navWrapper = document.querySelector('.nav-wrapper');
+const navBackdrop = document.querySelector('.nav-backdrop');
+const navLinks = document.querySelectorAll('.nav-menu a');
 
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
-    const cryptoDataEl = document.getElementById('crypto-data');
-    const refreshBtn = document.getElementById('refresh');
-    const searchInput = document.getElementById('search');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const themeToggle = document.getElementById('theme-toggle');
-    const sunIcon = themeToggle.querySelector('.fa-sun');
-    const moonIcon = themeToggle.querySelector('.fa-moon');
-    
-    // Global variables
-    let cryptoData = [];
-    let filteredData = [];
-    
-    // Check for saved theme preference or use preferred color scheme
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme') || 
-                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        setTheme(savedTheme);
+function toggleMenu() {
+    if (window.innerWidth <= 768) {
+        hamburger.classList.toggle('active');
+        navWrapper.classList.toggle('active');
+        navBackdrop.classList.toggle('active');
+        document.body.style.overflow = navWrapper.classList.contains('active') ? 'hidden' : '';
     }
-    
-    // Set the theme
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        
-        if (theme === 'dark') {
-            sunIcon.style.display = 'none';
-            moonIcon.style.display = 'block';
-        } else {
-            sunIcon.style.display = 'block';
-            moonIcon.style.display = 'none';
+}
+
+hamburger.addEventListener('click', toggleMenu);
+navBackdrop.addEventListener('click', toggleMenu);
+
+// Close menu when clicking links on mobile
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            toggleMenu();
         }
+    });
+});
+
+// Initialize menu state based on screen size
+function checkScreenSize() {
+    if (window.innerWidth > 768) {
+        // Ensure menu is visible on desktop
+        navWrapper.style.right = '';
+        navWrapper.classList.remove('active');
+        hamburger.classList.remove('active');
+        navBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
     }
-    
-    // Toggle between dark and light theme
-    function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
+}
+
+// Check on load and resize
+window.addEventListener('load', checkScreenSize);
+window.addEventListener('resize', checkScreenSize);
+
+// Theme toggle functionality
+const themeSwitch = document.getElementById('theme-switch');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDark)) {
+    document.body.setAttribute('data-theme', 'dark');
+    themeSwitch.checked = true;
+}
+
+themeSwitch.addEventListener('change', function() {
+    if (this.checked) {
+        document.body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
     }
-    
-    // Fetch crypto data from CoinGecko API
-    async function fetchCryptoData() {
-        try {
-            cryptoDataEl.innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading cryptocurrency data...</div>`;
-            
-            const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
-            const data = await response.json();
-            
-            cryptoData = data;
-            filteredData = [...data];
-            
-            renderCryptoData();
-            updateGlobalStats();
-        } catch (error) {
-            console.error('Error fetching crypto data:', error);
-            cryptoDataEl.innerHTML = `<div class="loading error"><i class="fas fa-exclamation-circle"></i> Failed to load data. Please try again later.</div>`;
-        }
-    }
-    
-    // Render crypto data to the DOM
-    function renderCryptoData() {
-        if (filteredData.length === 0) {
-            cryptoDataEl.innerHTML = `<div class="loading">No cryptocurrencies found matching your criteria.</div>`;
-            return;
-        }
+});
+
+// Smooth scrolling for navigation
+document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
         
-        cryptoDataEl.innerHTML = '';
-        
-        filteredData.forEach(crypto => {
-            const change24h = crypto.price_change_percentage_24h;
-            const changeClass = change24h >= 0 ? 'positive' : 'negative';
-            
-            const cryptoItem = document.createElement('div');
-            cryptoItem.className = 'crypto-item';
-            cryptoItem.innerHTML = `
-                <div class="rank">${crypto.market_cap_rank || '-'}</div>
-                <div class="name">
-                    <img src="${crypto.image}" alt="${crypto.name}">
-                    ${crypto.name} <span class="symbol">${crypto.symbol.toUpperCase()}</span>
-                </div>
-                <div class="price">$${crypto.current_price.toLocaleString()}</div>
-                <div class="change ${changeClass}">${change24h ? change24h.toFixed(2) + '%' : '-'}</div>
-                <div class="market-cap">$${crypto.market_cap.toLocaleString()}</div>
-            `;
-            
-            cryptoDataEl.appendChild(cryptoItem);
+        document.querySelectorAll('nav a').forEach(link => {
+            link.classList.remove('active');
         });
-    }
-    
-    // Update global statistics
-    function updateGlobalStats() {
-        if (cryptoData.length === 0) return;
         
-        const totalMarketCap = cryptoData.reduce((sum, crypto) => sum + crypto.market_cap, 0);
-        const totalVolume = cryptoData.reduce((sum, crypto) => sum + crypto.total_volume, 0);
+        this.classList.add('active');
         
-        document.getElementById('total-market-cap').textContent = `$${(totalMarketCap / 1000000000).toFixed(2)}B`;
-        document.getElementById('total-volume').textContent = `$${(totalVolume / 1000000000).toFixed(2)}B`;
-        document.getElementById('active-cryptos').textContent = cryptoData.length;
-    }
-    
-    // Filter crypto data based on search input
-    function filterBySearch() {
-        const searchTerm = searchInput.value.toLowerCase();
-        
-        filteredData = cryptoData.filter(crypto => 
-            crypto.name.toLowerCase().includes(searchTerm) || 
-            crypto.symbol.toLowerCase().includes(searchTerm)
-        );
-        
-        renderCryptoData();
-    }
-    
-    // Filter crypto data based on button selection
-    function filterByButton(filter) {
-        // Remove active class from all buttons
-        filterBtns.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
-        event.target.classList.add('active');
-        
-        switch(filter) {
-            case 'top10':
-                filteredData = cryptoData.slice(0, 10);
-                break;
-            case 'gainers':
-                filteredData = [...cryptoData]
-                    .filter(crypto => crypto.price_change_percentage_24h > 0)
-                    .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
-                break;
-            case 'losers':
-                filteredData = [...cryptoData]
-                    .filter(crypto => crypto.price_change_percentage_24h < 0)
-                    .sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h);
-                break;
-            default:
-                filteredData = [...cryptoData];
-        }
-        
-        renderCryptoData();
-    }
-    
-    // Event listeners
-    refreshBtn.addEventListener('click', fetchCryptoData);
-    searchInput.addEventListener('input', filterBySearch);
-    themeToggle.addEventListener('click', toggleTheme);
-    
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterByButton(btn.dataset.filter);
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
         });
     });
-    
-    // Initialize theme
-    initTheme();
-    
-    // Initial data fetch
-    fetchCryptoData();
-    
-    // Auto-refresh every 5 minutes
-    setInterval(fetchCryptoData, 5 * 60 * 1000);
 });
+
+// Update active link on scroll
+window.addEventListener('scroll', function() {
+    const scrollPosition = window.scrollY;
+    
+    document.querySelectorAll('section').forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+});
+
+// Project Filtering
+const filterButtons = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('.project-card');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+
+        const filterValue = button.getAttribute('data-filter');
+
+        projectCards.forEach(card => {
+            if (filterValue === 'all') {
+                card.style.display = 'block';
+            } else {
+                const techUsed = card.getAttribute('data-tech');
+                if (techUsed.includes(filterValue)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        });
+    });
+});
+
+// Contact form submission
+document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const responseDiv = document.getElementById('formResponse');
+    
+    responseDiv.innerHTML = '<p style="color: var(--primary-color)">Sending message...</p>';
+    responseDiv.style.color = 'var(--primary-color)';
+
+    fetch('send_email.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            responseDiv.innerHTML = `<p style="color: var(--primary-color)">${data.message}</p>`;
+            form.reset();
+        } else {
+            responseDiv.innerHTML = `<p style="color: #e74c3c">${data.message}</p>`;
+        }
+    })
+    .catch(error => {
+        responseDiv.innerHTML = '<p style="color: #e74c3c">Oops! There was a problem sending your message.</p>';
+    });
+});
+
+// Update copyright year automatically
+document.getElementById('year').textContent = new Date().getFullYear();
