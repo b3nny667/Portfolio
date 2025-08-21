@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><i class="fas fa-wallet"></i> Finance Dashboard</h1>
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+        </header>
 
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3>Balance</h3>
+                </div>
+                <p class="amount" id="balance">$4,250.75</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-arrow-up"></i>
+                    <h3>Income</h3>
+                </div>
+                <p class="amount positive" id="income">$3,200.00</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-arrow-down"></i>
+                    <h3>Expenses</h3>
+                </div>
+                <p class="amount negative" id="expenses">$1,449.25</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Chart Section -->
+            <div class="chart-section">
+                <h2><i class="fas fa-chart-pie"></i> Spending Breakdown</h2>
+                <canvas id="spendingChart"></canvas>
+            </div>
+            
+            <!-- Transactions -->
+            <div class="transactions">
+                <h2><i class="fas fa-list"></i> Recent Transactions</h2>
+                <div class="transaction-list" id="transaction-list">
+              
+                </div>
+                <form id="transaction-form">
+                    <input type="text" placeholder="Description" required>
+                    <input type="number" placeholder="Amount" step="0.01" required>
+                    <select required>
+                        <option value="">Category</option>
+                        <option value="food">Food</option>
+                        <option value="transport">Transport</option>
+                        <option value="housing">Housing</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button type="submit"><i class="fas fa-plus"></i> Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
