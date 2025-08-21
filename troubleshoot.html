@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages Troubleshooting - Ben Fazlija</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 25px 0 15px;
+            color: #2c3e50;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            margin: 20px 0 10px;
+            color: #3498db;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            background-color: #f8f9fa;
+        }
+        
+        .code {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+        
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .warning {
+            color: #e67e22;
+            font-weight: bold;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .checklist {
+            list-style-type: none;
+        }
+        
+        .checklist li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .checklist li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: #2980b9;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .tip {
+            background-color: #fff4e6;
+            padding: 15px;
+            border-left: 4px solid #e67e22;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GitHub Pages Troubleshooting Guide</h1>
+        <p>Follow these steps to diagnose and fix issues with your portfolio website</p>
+    </header>
+    
+    <div class="container">
+        <div class="section">
+            <h2>1. Verify GitHub Pages Configuration</h2>
+            
+            <div class="step">
+                <h3>Check if GitHub Pages is enabled</h3>
+                <p>Go to your repository on GitHub → Settings → Pages</p>
+                <p>Under "Source", it should be set to: <strong>Deploy from a branch</strong></p>
+                <p>And the branch should be: <strong>main</strong> (or master) and folder: <strong>/ (root)</strong></p>
+            </div>
+            
+            <div class="step">
+                <h3>Check the deployment status</h3>
+                <p>Go to your repository on GitHub → Actions</p>
+                <p>You should see a workflow called "pages-build-deployment"</p>
+                <p>If there's a red ❌, there's an error. If there's a green ✅, it deployed successfully.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>2. Verify Your Repository Structure</h2>
+            
+            <div class="step">
+                <h3>Your repository should have these files at the root:</h3>
+                <div class="code">
+index.html
+style.css
+script.js
+send_email.php
+/assets (folder)
+/certificates (folder)
+/projects (folder)
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>Check your image paths</h3>
+                <p>Make sure all image paths in your HTML are correct:</p>
+                <div class="code">
+&lt;!-- Certificates --&gt;
+&lt;img src="certificates/Tectigon Academy-1.png"&gt;
+
+&lt;!-- Project images --&gt;
+&lt;img src="projects/crypto app/img/crypto app.PNG"&gt;
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>3. Common Issues and Fixes</h2>
+            
+            <div class="step">
+                <h3>GitHub Pages not building</h3>
+                <p>Sometimes GitHub Pages fails to build if there are errors in your code.</p>
+                <p class="tip">Check the Actions tab for any error messages.</p>
+            </div>
+            
+            <div class="step">
+                <h3>File name case sensitivity</h3>
+                <p>GitHub is case-sensitive. Make sure your file references match exactly:</p>
+                <div class="code">
+&lt;!-- This will work --&gt;
+&lt;img src="certificates/Tectigon Academy-1.png"&gt;
+
+&lt;!-- This might NOT work --&gt;
+&lt;img src="Certificates/Tectigon Academy-1.png"&gt;
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>Spaces in file names</h3>
+                <p>Spaces in file names can cause issues. Consider renaming:</p>
+                <div class="code">
+"crypto app.PNG" → "crypto-app.PNG"
+                </div>
+                <p>Then update your HTML accordingly.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>4. Quick Fixes to Try</h2>
+            
+            <div class="step">
+                <h3>Rename your main HTML file</h3>
+                <p>GitHub Pages looks for index.html by default. Make sure your main file is named exactly:</p>
+                <div class="code">
+index.html
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>Check for configuration files</h3>
+                <p>Add a .nojekyll file to the root of your repository to disable Jekyll processing:</p>
+                <div class="code">
+# Create an empty file named .nojekyll
+# This tells GitHub Pages not to use Jekyll
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>Wait for deployment</h3>
+                <p>GitHub Pages can take up to 10 minutes to deploy after you push changes.</p>
+                <p>Check the status at: <strong>https://github.com/b3nny667/b3nny667.github.io/actions</strong></p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>5. Final Checklist</h2>
+            
+            <ul class="checklist">
+                <li>GitHub Pages is enabled in repository settings</li>
+                <li>All files are in the main branch (not a separate branch)</li>
+                <li>Main HTML file is named index.html</li>
+                <li>All file paths are correct and case-sensitive</li>
+                <li>No build errors in the Actions tab</li>
+                <li>You've waited at least 5 minutes after your last commit</li>
+                <li>You're visiting the correct URL: https://b3nny667.github.io</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Need More Help?</h2>
+            
+            <p>If you're still having issues, try these resources:</p>
+            <a href="https://docs.github.com/en/pages" class="button" target="_blank">GitHub Pages Docs</a>
+            <a href="https://github.com/b3nny667/b3nny667.github.io" class="button" target="_blank">Your Repository</a>
+            <a href="https://www.w3schools.com/html/html_filepaths.asp" class="button" target="_blank">File Paths Guide</a>
+        </div>
+    </div>
+
+    <script>
+        // Simple check for GitHub Pages URL
+        if (window.location.hostname === 'b3nny667.github.io') {
+            document.body.innerHTML += '<div style="background: #27ae60; color: white; padding: 15px; text-align: center; margin-top: 20px; border-radius: 5px;">You are viewing your GitHub Pages site! If your portfolio is not working, check the steps above.</div>';
+        }
+    </script>
+</body>
+</html>
