@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Additional styles for the fix notification */
-        .fix-notification {
+        /* Notification for GitHub Pages fix */
+        .github-fix-notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #e74c3c;
+            background: #27ae60;
             color: white;
             padding: 15px;
             border-radius: 5px;
@@ -24,8 +24,8 @@
     </style>
 </head>
 <body>
-    <div class="fix-notification" id="fixNotification">
-        <strong>URL Fix Applied</strong>
+    <div class="github-fix-notification" id="githubFixNotification">
+        <strong>GitHub Pages Detected</strong>
         <p>Project links have been updated to work with GitHub Pages</p>
     </div>
 
@@ -166,7 +166,7 @@
             <div class="projects-grid">
                 <div class="project-card" data-tech="html javascript">
                     <div class="project-image" style="background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);">
-                        <img src="./img/crypto app.PNG" alt="Crypto Tracker App">
+                        <img src="./crypto-app/img/crypto app.PNG" alt="Crypto Tracker App">
                     </div>
                     <div class="project-info">
                         <h3>Crypto Tracker</h3>
@@ -177,7 +177,7 @@
                             <span>JavaScript</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="btn project-demo" data-project-path="projects/crypto-app/index.html">Live Demo</a>
+                            <a href="#" class="btn project-demo" data-project-path="crypto-app/index.html">Live Demo</a>
                             <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                 
                 <div class="project-card" data-tech="react">
                     <div class="project-image">
-                        <img src="/img/pl2.PNG" alt="Movie Database App">
+                        <img src="./movie-app/img/pl2.PNG" alt="Movie Database App">
                     </div>
                     <div class="project-info">
                         <h3>Movie Database</h3>
@@ -196,7 +196,7 @@
                             <span>Styled Components</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="btn project-demo" data-project-path="projects/movie-app/index.html">Live Demo</a>
+                            <a href="#" class="btn project-demo" data-project-path="movie-app/index.html">Live Demo</a>
                             <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
                         </div>
                     </div>
@@ -204,7 +204,7 @@
                 
                 <div class="project-card" data-tech="javascript">
                     <div class="project-image" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);">
-                       <img src="img/finance DB.PNG" alt="Finance Dashboard">
+                       <img src="./finance-dashboard/img/finance DB.PNG" alt="Finance Dashboard">
                     </div>
                     <div class="project-info">
                         <h3>Finance Dashboard</h3>
@@ -215,7 +215,7 @@
                          
                         </div>
                         <div class="project-links">
-                            <a href="#" class="btn project-demo" data-project-path="projects/finance-dashboard/index.html">Live Demo</a>
+                            <a href="#" class="btn project-demo" data-project-path="finance-dashboard/index.html">Live Demo</a>
                             <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
                         </div>
                     </div>
@@ -407,11 +407,10 @@
             demoLinks.forEach(link => {
                 const projectPath = link.getAttribute('data-project-path');
                 
-                // Check if we're on GitHub Pages or local
+                // Check if we're on GitHub Pages
                 if (window.location.hostname === 'b3nny667.github.io') {
-                    // On GitHub Pages - encode spaces and use absolute path
-                    const encodedPath = encodeURI(projectPath); // This converts spaces to %20
-                    link.href = '/Portfolio/' + encodedPath;
+                    // On GitHub Pages - use absolute path
+                    link.href = '/' + projectPath;
                     fixApplied = true;
                 } else if (window.location.protocol === 'file:') {
                     // Local development - use relative path
@@ -423,11 +422,18 @@
                 
                 // Open in new tab
                 link.target = '_blank';
+                
+                // Add click event to check if link works
+                link.addEventListener('click', function(e) {
+                    // Allow the link to open normally
+                    // This is just for testing
+                    console.log('Opening project:', this.href);
+                });
             });
             
             // Show notification if fix was applied
             if (fixApplied) {
-                const notification = document.getElementById('fixNotification');
+                const notification = document.getElementById('githubFixNotification');
                 notification.style.display = 'block';
                 
                 // Hide notification after 5 seconds
@@ -438,6 +444,25 @@
             
             // Update year in footer
             document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Test if project links are working
+            function testProjectLinks() {
+                demoLinks.forEach(async (link) => {
+                    try {
+                        const response = await fetch(link.href, { method: 'HEAD' });
+                        if (response.status === 200) {
+                            console.log(`✓ ${link.href} is accessible`);
+                        } else {
+                            console.log(`✗ ${link.href} returned status ${response.status}`);
+                        }
+                    } catch (error) {
+                        console.log(`✗ ${link.href} is not accessible: ${error.message}`);
+                    }
+                });
+            }
+            
+            // Test links after a delay
+            setTimeout(testProjectLinks, 2000);
         });
     </script>
 </body>
