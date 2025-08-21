@@ -6,8 +6,29 @@
     <title>Ben Fazlija | Frontend Developer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for the fix notification */
+        .fix-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10000;
+            max-width: 300px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
+    <div class="fix-notification" id="fixNotification">
+        <strong>URL Fix Applied</strong>
+        <p>Project links have been updated to work with GitHub Pages</p>
+    </div>
+
     <header>
         <div class="header-container container">
             <div class="logo">BF</div>
@@ -156,7 +177,7 @@
                             <span>JavaScript</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="btn project-demo" data-project-path="projects/crypto app/index.html">Live Demo</a>
+                            <a href="#" class="btn project-demo" data-project-path="projects/crypto-app/index.html">Live Demo</a>
                             <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
                         </div>
                     </div>
@@ -164,7 +185,7 @@
                 
                 <div class="project-card" data-tech="react">
                     <div class="project-image">
-                        <img src="./img/pl2.PNG" alt="Movie Database App">
+                        <img src="/img/pl2.PNG" alt="Movie Database App">
                     </div>
                     <div class="project-info">
                         <h3>Movie Database</h3>
@@ -175,7 +196,7 @@
                             <span>Styled Components</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="btn project-demo" data-project-path="projects/movie app/index.html">Live Demo</a>
+                            <a href="#" class="btn project-demo" data-project-path="projects/movie-app/index.html">Live Demo</a>
                             <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
                         </div>
                     </div>
@@ -183,7 +204,7 @@
                 
                 <div class="project-card" data-tech="javascript">
                     <div class="project-image" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);">
-                       <img src="./img/finance DB.PNG" alt="Finance Dashboard">
+                       <img src="img/finance DB.PNG" alt="Finance Dashboard">
                     </div>
                     <div class="project-info">
                         <h3>Finance Dashboard</h3>
@@ -194,7 +215,7 @@
                          
                         </div>
                         <div class="project-links">
-                            <a href="#" class="btn project-demo" data-project-path="projects/finance dashboard/index.html">Live Demo</a>
+                            <a href="#" class="btn project-demo" data-project-path="projects/finance-dashboard/index.html">Live Demo</a>
                             <a href="https://github.com/b3nny667" class="btn btn-outline">GitHub</a>
                         </div>
                     </div>
@@ -377,28 +398,46 @@
 
     <script src="script.js"></script>
     <script>
-        // Add this script to handle project demo links for GitHub Pages
+        // Enhanced URL fix for GitHub Pages
         document.addEventListener('DOMContentLoaded', function() {
             // Get all project demo links
             const demoLinks = document.querySelectorAll('a.project-demo');
+            let fixApplied = false;
             
             demoLinks.forEach(link => {
                 const projectPath = link.getAttribute('data-project-path');
                 
                 // Check if we're on GitHub Pages or local
                 if (window.location.hostname === 'b3nny667.github.io') {
-                    // On GitHub Pages - use absolute path with repository name
-                    const pathParts = window.location.pathname.split('/');
-                    const repoName = pathParts[1];
-                    link.href = '/' + repoName + '/' + projectPath;
-                } else {
+                    // On GitHub Pages - encode spaces and use absolute path
+                    const encodedPath = encodeURI(projectPath); // This converts spaces to %20
+                    link.href = '/Portfolio/' + encodedPath;
+                    fixApplied = true;
+                } else if (window.location.protocol === 'file:') {
                     // Local development - use relative path
                     link.href = './' + projectPath;
+                } else {
+                    // Other hosting environments
+                    link.href = projectPath;
                 }
                 
                 // Open in new tab
                 link.target = '_blank';
             });
+            
+            // Show notification if fix was applied
+            if (fixApplied) {
+                const notification = document.getElementById('fixNotification');
+                notification.style.display = 'block';
+                
+                // Hide notification after 5 seconds
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Update year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
         });
     </script>
 </body>
