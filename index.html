@@ -6,9 +6,41 @@
     <title>Ben Fazlija | Frontend Developer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    
+    <style>
+
+        
+        /* Form status messages */
+        .form-success {
+            color: #27ae60;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .form-error {
+            color: #e74c3c;
+            padding: 10px;
+            background: #ffebee;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .form-sending {
+            color: var(--primary-color);
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+ 
+
     <header>
         <div class="header-container container">
             <div class="logo">BF</div>
@@ -315,7 +347,8 @@
         <div class="container">
             <h2 class="section-title">Contact Me</h2>
             <div class="contact-form">
-                <form id="contactForm" method="POST">
+                <!-- Formspree form with your form ID -->
+                <form id="contactForm" action="https://formspree.io/f/xldlqjqz" method="POST">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" required>
@@ -417,6 +450,32 @@
             
             // Update year in footer
             document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Form submission handling
+            const contactForm = document.getElementById('contactForm');
+            const formResponse = document.getElementById('formResponse');
+            
+            if (contactForm && formResponse) {
+                contactForm.addEventListener('submit', function() {
+                    // Show sending message
+                    formResponse.innerHTML = '<div class="form-sending">Sending message...</div>';
+                    
+                    // Formspree will handle the submission, so we don't need to prevent default
+                    // The form will redirect to Formspree's confirmation page
+                });
+                
+                // Check if we're returning from a successful form submission
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.toString().includes('success')) {
+                    formResponse.innerHTML = '<div class="form-success">Thank you! Your message has been sent successfully.</div>';
+                    
+                    // Clear the form
+                    contactForm.reset();
+                    
+                    // Remove the parameters from URL without refreshing
+                    history.replaceState({}, document.title, window.location.pathname);
+                }
+            }
         });
     </script>
 </body>
